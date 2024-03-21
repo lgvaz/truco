@@ -1,0 +1,32 @@
+[
+  {
+    "objectID": "core_old.html",
+    "href": "core_old.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nfoo\n\n foo ()",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nget_trump_round_rank\n\n get_trump_round_rank (faceup)\n\n\nfaceup = '3'\ntrump, round_rank = get_trump_round_rank(faceup)\n\n\ntest_eq(trump, '4')\ntest_eq(round_rank['4d'], 9)\ntest_eq(round_rank['4c'], 12)\ntest_eq(round_rank['3h'], 8)\ntest_eq(round_rank['3c'], 8)\n\n\nsource\n\n\ncards2ranks\n\n cards2ranks (cards, round_rank)\n\n\ncards_t1 = 'kc 2h 4d jd jh 6s'.split()\ncards_t2 = '5c 3d ah ad 4s js'.split()\n\n\nranks_t1 = np.sort(cards2ranks(cards_t1, round_rank))[::-1]\nranks_t2 = np.sort(cards2ranks(cards_t2, round_rank))[::-1]\n\n\nranks_t1 - ranks_t2\n\narray([-1, -1, -1, -2,  0,  1])\n\n\n\nranks_t1 = np.array(round_rank[c] for c in cards)\n\n\nclass RoundManager:\n    def __init__(self, round_rank):\n        self.round_rank = round_rank\n    \n    def sort(self, cards): return sorted(cards, key=self.round_rank.get, reverse=True)\n    def sub(self, c1, c2): return self.round_rank[c1] - self.round_rank[c2]\n    def ranks(self, cards): return np.array(list(map(self.round_rank.get, cards)))\n\n\nrm = RoundManager(round_rank)\n\n\nrm.ranks(rm.sort(cards_t1)) - rm.ranks(rm.sort(cards_t2))\n\narray([-1, -1, -1, -3, -3,  1])\n\n\n\nrm.sort(cards_t1) - rm.sort(cards_t2)\n\n['4d', '2h', 'kc', 'qd', '6h', '6s']\n\n\n\nrm.sub('4d', '3d')\n\n2\n\n\n\ntsorted = partial(sorted, key=round_rank.get, reverse=True)\n\n\ndef tsub(a, b):\n\n\nsub(1, 2, key=lambda x: x)\n\nTypeError: _inner() got an unexpected keyword argument 'key'\n\n\n\ntsorted(cards_t1)\n\n['4d', '2h', 'kc', 'qd', '6h', '6s']\n\n\n\ntsorted(cards_t2)\n\n['4s', '3d', 'ah', 'ad', 'js', '5c']\n\n\n\nround_rank.get(c4)\n\n6\n\n\n\nsorted(cards, key=round_rank.get)\n\n['kc', 'ac', '2h', '2h']\n\n\n\nmax(cards, key=round_rank.get)\n\n'2h'",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core_old-copy1.html",
+    "href": "core_old-copy1.html",
+    "title": "core",
+    "section": "",
+    "text": "def sample_one(i):\n    t2_cards = random.sample(card_pool, 6)\n#     faceup = round_cards[0]\n#     t2_cards = round_cards[1:]\n    \n    # TODO: don't need to return trump card\n    trump, round_rank = tr.get_trump_round_rank(faceup)\n    \n    t1_ranks = tr.cards2ranks(t1_cards, round_rank)\n    t2_ranks = tr.cards2ranks(t2_cards, round_rank)\n    \n    t1_ranks = np.sort(t1_ranks)[-1:-4:-1]\n    t2_ranks = np.sort(t2_ranks)[-1:-4:-1]\n    \n    round_result = (t1_ranks - t2_ranks)\n    return round_result\n\n\n# t1_cards = '3d 3h ks'.split()\n# t1_cards = '5c 5h 6s'.split()\nt1_cards = '3d 3h ks'.split()\nfaceup = '4d'\n# t1_cards = '3d 3h ks'.split()\ncard_pool = list(set(tr.card_pool) - set(t1_cards+[faceup]))\n\n\nresults = np.array(parallel(sample_one, range(10000), progress=pv.pbar))\n\n\nresults_sign = np.sign(results)\n\n\nwins = np.sign(results_sign.sum(axis=1))\nscore, counts = np.unique(wins, return_counts=True)\nprint(''.join(f'{s}: {c/len(results)}\\n' for s, c in zip(score, counts)))\n\n-1: 0.3443\n0: 0.1477\n1: 0.508\n\n\n\n\n_, counts = np.unique(results_sign, return_counts=True)\nloose_pct, draw_pct\n\n(array([-1,  0,  1]), array([ 8855,  3937, 17208]))\n\n\n\nresult = results[-2]\nresult\n\narray([-1,  0, -2])\n\n\n\nnp.sign(result)\n\narray([-1,  0, -1])\n\n\n\nnp.sign()\n\n\nsource\n\nfoo\n\n foo ()",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
