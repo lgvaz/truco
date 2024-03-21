@@ -4,9 +4,11 @@
 __all__ = ['foo']
 
 # %% ../nbs/00_core_old-Copy1.ipynb 4
+from fastcore.all import *
+import polvo as pv
 import truco as tr
 import numpy as np
 import random
 
-# %% ../nbs/00_core_old-Copy1.ipynb 12
+# %% ../nbs/00_core_old-Copy1.ipynb 14
 def foo(): pass
